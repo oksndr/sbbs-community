@@ -16,12 +16,7 @@
 使用 Navicat 执行数据库脚本初始化数据库结构：
 
 1. 打开 Navicat，连接到 PostgreSQL 服务器
-2. 新建查询窗口，执行以下命令创建数据库：
-   ```sql
-   CREATE DATABASE sbbs;
-   ```
-3. 连接到 sbbs 数据库
-4. 打开 `sbbs.sql` 文件，执行其中的所有 SQL 语句创建表结构
+2. 新建查询窗口，执行`sbbs.sql` 文件中的所有 SQL 语句创建表结构
 
 EasyImages2.0 部署请参考：https://github.com/icret/EasyImages2.0
 
