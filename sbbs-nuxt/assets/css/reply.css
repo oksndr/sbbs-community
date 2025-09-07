@@ -1,0 +1,945 @@
+/* 回复表单 */
+.reply-form {
+  margin: 0.4rem 0 0.4rem 1.5rem;
+  background-color: #ffffff;
+  border-radius: 6px;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  position: relative;
+  z-index: 5;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  max-width: calc(100% - 2rem);
+  overflow: hidden;
+}
+
+.reply-textarea {
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  min-height: 70px;
+  font-size: 0.8rem;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.reply-textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+}
+
+.comment-replies {
+  margin: 0.4rem 0 0.4rem 1.5rem;
+  border-left: 1px solid rgba(0, 102, 204, 0.15);
+  background-color: rgba(245, 247, 250, 0.2);
+  border-radius: 0 4px 4px 0;
+}
+
+.reply-toggle {
+  margin: 0.2rem 0 0.4rem;
+}
+
+.reply-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  background-color: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  color: #0066cc;
+  font-size: 0.72rem;
+  font-weight: 500;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.reply-toggle-btn:hover {
+  background-color: rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.reply-toggle-btn i {
+  margin-right: 0.2rem;
+  font-size: 0.72rem;
+}
+
+.reply-loading {
+  display: flex;
+  align-items: center;
+  color: #64748b;
+  font-size: 0.65rem;
+  margin: 0.4rem 0;
+  gap: 0.2rem;
+}
+
+.reply-list {
+  margin-top: 0.4rem;
+}
+
+/* 回复列表容器 - 增加视觉层次 */
+.replies-list {
+  margin-left: 2rem;
+  margin-top: 0.5rem;
+  border-left: 2px solid #e5e7eb;
+  background: #fafbfc;
+  border-radius: 0 6px 6px 0;
+  overflow: hidden;
+  padding: 0.5rem 0;
+}
+
+/* 重新设计的二级评论样式 - 仿NodeSeek */
+.reply-item {
+  position: relative;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 0;
+  transition: all 0.2s ease;
+  background: #fafbfc;
+  min-height: auto;
+  padding: 0.75rem 1rem;
+}
+
+/* 确保回复项在激活时可见 */
+.reply-item:focus-within {
+  position: relative;
+  z-index: 99999 !important;
+}
+
+.reply-item:hover {
+  background-color: #f1f5f9;
+}
+
+.reply-item:last-child {
+  border-bottom: none;
+}
+
+.reply-item[data-reply-id^="temp-"],
+.reply-item.temp-reply {
+  animation: reply-appear 0.5s ease;
+  background-color: rgba(59, 130, 246, 0.08);
+}
+
+@keyframes reply-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 回复头部 - 统一布局 */
+.reply-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* 回复头像 */
+.reply-avatar {
+  width: 1.6rem !important;
+  height: 1.6rem !important;
+  border-radius: 4px !important;
+  overflow: hidden !important;
+  flex-shrink: 0 !important;
+  margin: 0 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+}
+
+.reply-avatar img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+/* 回复信息区域 */
+.reply-meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.reply-author {
+  font-weight: 600;
+  color: #1a202c;
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
+.reply-author:hover {
+  color: #3b82f6;
+}
+
+.reply-to {
+  font-size: 0.72rem;
+  color: #64748b;
+}
+
+.reply-to a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.reply-to a:hover {
+  text-decoration: underline;
+}
+
+.reply-time {
+  font-size: 0.7rem;
+  color: #9ca3af;
+}
+
+/* 回复内容 */
+.reply-text {
+  color: #374151;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  margin: 0.4rem 0 0.6rem 0;
+  word-wrap: break-word;
+}
+
+.reply-text div {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+.reply-text br {
+  display: none;
+}
+
+.reply-text p {
+  margin: 0;
+  padding: 0;
+  display: inline;
+}
+
+/* 回复操作按钮 - 更精致的设计 */
+.reply-actions {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+  margin-top: 0;
+}
+
+.reply-actions .action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.reply-actions .action-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: currentColor;
+  border-radius: 50%;
+  opacity: 0.1;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+}
+
+.reply-actions .action-btn:hover::before {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+}
+
+.reply-actions .action-btn:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+  color: #475569;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.reply-actions .action-btn.liked {
+  color: #16a34a;
+  background-color: rgba(22, 163, 74, 0.1);
+  border-color: rgba(22, 163, 74, 0.3);
+}
+
+.reply-actions .action-btn.liked:hover {
+  background-color: rgba(22, 163, 74, 0.15);
+  border-color: rgba(22, 163, 74, 0.4);
+}
+
+.reply-actions .action-btn.disliked {
+  color: #dc2626;
+  background-color: rgba(220, 38, 38, 0.1);
+  border-color: rgba(220, 38, 38, 0.3);
+}
+
+.reply-actions .action-btn.disliked:hover {
+  background-color: rgba(220, 38, 38, 0.15);
+  border-color: rgba(220, 38, 38, 0.4);
+}
+
+.reply-actions .action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.reply-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.reply-form-header i {
+  margin-right: 0.25rem;
+  color: #3b82f6;
+  font-size: 0.8rem;
+}
+
+.reply-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: none;
+  background: none;
+  color: #64748b;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.7rem;
+}
+
+.reply-close-btn:hover {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+
+.reply-close-btn i {
+  font-size: 0.7rem;
+}
+
+/* 优化二级评论的回复表单样式 */
+.comment-replies .reply-form {
+  border-color: rgba(59, 130, 246, 0.15);
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* 添加针对二级评论回复表单的特殊样式 */
+.reply-to-specific {
+  background-color: rgba(239, 246, 255, 0.8);
+}
+
+/* 现代化的二级评论回复表单 */
+.reply-to-reply-form {
+  margin: 0.5rem 0 0 0;
+  padding: 0;
+  background: transparent;
+}
+
+.reply-input-wrapper {
+  background: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.4rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.reply-input-wrapper:focus-within {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2), 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.reply-input {
+  width: 100%;
+  min-height: 4rem;
+  border: none;
+  outline: none;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #374151;
+  background: transparent;
+  resize: none;
+  font-family: inherit;
+  margin-bottom: 0.75rem;
+}
+
+.reply-input:empty::before {
+  content: attr(placeholder);
+  color: #9ca3af;
+}
+
+.reply-input:focus:empty::before {
+  color: #d1d5db;
+}
+
+/* 回复操作按钮区域 */
+.reply-input-wrapper .reply-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding-top: 0.5rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+/* 回复输入框操作区域的提示 */
+.reply-input-wrapper .reply-actions::before {
+  content: "💡 Ctrl+Enter 快速发布";
+  font-size: 0.7rem;
+  color: #9ca3af;
+  flex: 1;
+}
+
+/* 明确隐藏二级评论操作区域的提示 */
+.reply-item .reply-actions::before {
+  display: none !important;
+}
+
+/* 右侧按钮组 */
+.reply-actions .button-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* 取消按钮 */
+.reply-actions .cancel-btn {
+  padding: 0.4rem 0.75rem;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reply-actions .cancel-btn:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #475569;
+}
+
+/* 发布按钮 */
+.reply-actions .submit-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.4rem 0.75rem;
+  background: #3b82f6;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.reply-actions .submit-btn:hover:not(:disabled) {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.reply-actions .submit-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+  .reply-to-reply-form {
+    margin-left: 0;
+  }
+  
+  .reply-input-wrapper {
+    padding: 0.5rem;
+  }
+  
+  .reply-input {
+    min-height: 3rem;
+    font-size: 0.8rem;
+  }
+  
+  .reply-actions::before,
+  .reply-input-wrapper .reply-actions::before {
+    display: none;
+  }
+  
+  .reply-actions {
+    justify-content: flex-end;
+  }
+
+  .replies-list {
+    margin-left: 1rem;
+    padding: 0.3rem 0;
+  }
+
+  .reply-item {
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+/* 二级评论@功能专用样式 */
+.reply-user-search-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 2px;
+}
+
+.reply-user-search-dropdown .user-search-loading,
+.reply-user-search-dropdown .user-search-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  color: #666;
+  font-size: 0.875rem;
+  gap: 0.5rem;
+}
+
+.reply-user-search-dropdown .user-search-loading i,
+.reply-user-search-dropdown .user-search-empty i {
+  font-size: 1.125rem;
+  color: #666;
+}
+
+.reply-user-search-dropdown .user-search-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  gap: 0.75rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.reply-user-search-dropdown .user-search-item:last-child {
+  border-bottom: none;
+}
+
+.reply-user-search-dropdown .user-search-item:hover,
+.reply-user-search-dropdown .user-search-item.active {
+  background-color: #f0f7ff;
+}
+
+.reply-user-search-dropdown .user-search-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  object-fit: cover;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.reply-user-search-dropdown .user-search-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+/* 确保二级评论输入框样式适配@功能 */
+.reply-to-reply-form .textarea-wrapper {
+  position: relative;
+}
+
+.reply-to-reply-form .reply-textarea.comment-editable {
+  min-height: 70px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  background: white;
+  font-family: inherit;
+  line-height: 1.5;
+  outline: none;
+}
+
+.reply-to-reply-form .reply-textarea.comment-editable:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+}
+
+.reply-to-reply-form .reply-textarea.comment-editable:empty::before {
+  content: attr(placeholder);
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+.reply-to-reply-form .reply-textarea.comment-editable:focus:empty::before {
+  color: #d1d5db;
+}
+
+/* 回复评论的输入区域样式 - 简化版本 */
+.reply-comment-input-area {
+  position: relative;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin: 0; /* 移除上下margin */
+  transition: all 0.2s ease;
+}
+
+/* 确保回复区域在激活时可见 */
+.reply-comment-input-area:focus-within {
+  position: relative;
+  z-index: 99999 !important;
+  background: #ffffff;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.reply-comment-input-area:focus-within {
+  border-color: #3b82f6;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* 强制覆盖可能的样式冲突 */
+.reply-form .reply-comment-input-area,
+.reply-to-reply-form .reply-comment-input-area {
+  border: 1px solid #e2e8f0 !important;
+  background: #f8fafc !important;
+  box-shadow: none !important;
+  margin: 0 !important; /* 移除上下margin */
+  padding: 0.75rem !important;
+}
+
+.reply-form .reply-comment-input-area:focus-within,
+.reply-to-reply-form .reply-comment-input-area:focus-within {
+  border-color: #3b82f6 !important;
+  background: white !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+.reply-comment-input-area .comment-editable {
+  min-height: 60px;
+  max-height: 200px;
+  overflow-y: auto;
+  border: none !important;
+  outline: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #374151;
+  resize: none;
+  font-family: inherit;
+  box-shadow: none !important;
+}
+
+.reply-comment-input-area .comment-editable:empty::before {
+  content: attr(placeholder);
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+.reply-comment-input-area .comment-editable:focus:empty::before {
+  color: #d1d5db;
+}
+
+.reply-comment-tips {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e2e8f0;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.reply-comment-tips .reply-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* 确保回复评论的用户搜索下拉框正确定位 */
+.reply-comment-input-area .user-search-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 2px;
+}
+
+/* 修复搜索下拉框定位 - 使用fixed定位避免遮挡 */
+/* 输入区域基础样式 */
+.comment-input-area {
+  position: relative !important;
+  background: #ffffff !important;
+}
+
+/* 搜索下拉框基础样式 */
+.user-search-dropdown {
+  position: fixed !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 6px !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25) !important;
+  max-height: 200px !important;
+  overflow-y: auto !important;
+  z-index: 1001 !important;
+  min-width: 200px !important;
+  max-width: 320px !important;
+}
+
+/* 向下显示的样式 */
+.user-search-dropdown.dropdown-bottom {
+  margin-top: 4px !important;
+  animation: dropdown-bottom 0.15s ease-out !important;
+  transform: translateY(24px) !important;
+}
+
+/* 向上显示的样式 */
+.user-search-dropdown.dropdown-top {
+  margin-bottom: 4px !important;
+  animation: dropdown-top 0.15s ease-out !important;
+  transform: translateY(-100%) translateY(-24px) !important;
+}
+
+/* 特定位置的搜索下拉框样式 */
+.comment-form .user-search-dropdown {
+  z-index: 50 !important;
+}
+
+.reply-form .user-search-dropdown {
+  z-index: 50 !important;
+}
+
+.reply-to-reply-form .user-search-dropdown {
+  z-index: 50 !important;
+}
+
+/* 确保输入区域在编辑时可见 */
+.comment-form .comment-input-area:focus-within,
+.reply-form .comment-input-area:focus-within,
+.reply-to-reply-form .comment-input-area:focus-within {
+  position: relative !important;
+  z-index: 50 !important;
+}
+
+/* 确保回复表单在激活时可见 */
+.reply-form:focus-within,
+.reply-to-reply-form:focus-within {
+  position: relative !important;
+  z-index: 50 !important;
+}
+
+/* 确保搜索框容器在显示时可见 */
+.comment-input-area:has(.user-search-dropdown.visible) {
+  z-index: 50 !important;
+}
+
+/* 添加下拉框出现动画 */
+/* 向下展开的动画 */
+@keyframes dropdown-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(19px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(24px);
+  }
+}
+
+/* 向上展开的动画 */
+@keyframes dropdown-top {
+  from {
+    opacity: 0;
+    transform: translateY(-95%) translateY(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-100%) translateY(-24px);
+  }
+}
+
+/* 搜索框默认隐藏 */
+.user-search-dropdown {
+  display: none !important;
+}
+
+/* 当搜索框可见时的样式 */
+.user-search-dropdown.visible {
+  display: block !important;
+}
+
+/* 防止搜索框内容透视 */
+.user-search-dropdown::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #ffffff;
+  z-index: -1;
+}
+
+/* 搜索项样式 */
+.user-search-item {
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  background: #ffffff !important;
+  border-bottom: 1px solid #f3f4f6;
+  position: relative !important;
+  transform: translateZ(0) !important;
+  -webkit-transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+}
+
+.user-search-item:last-child {
+  border-bottom: none;
+}
+
+.user-search-item:hover,
+.user-search-item.active {
+  background: #f0f7ff !important;
+}
+
+/* 增强搜索框内容项的样式 */
+.user-search-loading,
+.user-search-empty {
+  padding: 10px;
+  text-align: center;
+  background: #ffffff !important;
+  color: #6b7280;
+  position: relative !important;
+  transform: translateZ(0) !important;
+  -webkit-transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+}
+
+/* 评论项基础样式 */
+.comment-item {
+  position: relative;
+  background: #ffffff;
+}
+
+/* 搜索项样式优化 */
+.user-search-item {
+  display: flex !important;
+  align-items: center !important;
+  padding: 8px 12px !important;
+  cursor: pointer !important;
+  border-bottom: 1px solid #f3f4f6 !important;
+  background: #ffffff !important;
+}
+
+.user-search-item:last-child {
+  border-bottom: none !important;
+}
+
+.user-search-item:hover,
+.user-search-item.active {
+  background: #f0f7ff !important;
+}
+
+.user-search-avatar {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 4px !important;
+  margin-right: 12px !important;
+}
+
+.user-info {
+  flex: 1 !important;
+}
+
+.user-search-name {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #1f2937 !important;
+}
+
+/* 降低回复表单的z-index，避免遮挡通知面板 */
+.reply-form,
+.reply-to-reply-form {
+  position: relative;
+  z-index: 10 !important; /* 降低z-index */
+}
+
+/* 确保父容器有正确的定位上下文 */
+.reply-form,
+.reply-to-reply-form,
+.comment-form {
+  position: relative !important;
+  z-index: 10 !important; /* 降低z-index，让header可以覆盖 */
+}
+
+/* 输入区域容器 */
+.reply-form .comment-input-area,
+.reply-to-reply-form .comment-input-area,
+.comment-form .comment-input-area {
+  position: relative !important;
+  overflow: visible !important;
+  z-index: 10 !important;
+}
+
+/* 确保输入框容器层级适中 */
+.reply-form .textarea-wrapper,
+.reply-to-reply-form .textarea-wrapper,
+.comment-form .textarea-wrapper {
+  position: relative !important;
+  z-index: 10 !important;
+} 

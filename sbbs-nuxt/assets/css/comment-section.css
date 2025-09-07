@@ -1,0 +1,1586 @@
+/* 评论区样式 - 模仿NodeSeek的简洁风格 */
+.comments-section {
+  background: white;
+  border: 1px solid var(--border-color, #e5e7eb); /* 使用简单边框 */
+  border-radius: 8px; /* 减小圆角 */
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: none; /* 移除阴影 */
+  position: relative;
+}
+
+.comments-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.comments-section:hover {
+  border-color: #cbd5e0; /* 只改变边框色 */
+  transform: none; /* 移除变换 */
+}
+
+.comments-section:hover::before {
+  opacity: 1;
+}
+
+.section-header {
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1a202c;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.section-header h2 i {
+  margin-right: 0.5rem;
+  font-size: 0.9rem;
+  color: #3b82f6;
+}
+
+/* 标题区域的分页样式 */
+.header-pagination {
+  flex-shrink: 0;
+}
+
+.header-pagination .modern-pagination {
+  gap: 3px;
+}
+
+.header-pagination .pagination-btn {
+  min-width: 24px;
+  height: 24px;
+  padding: 0 4px;
+  font-size: 11px;
+  border-radius: 2px;
+}
+
+.header-pagination .prev-btn,
+.header-pagination .next-btn {
+  padding: 0 6px;
+  font-size: 11px;
+}
+
+.header-pagination .prev-btn i,
+.header-pagination .next-btn i {
+  font-size: 10px;
+}
+
+.header-pagination .pagination-ellipsis {
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+}
+
+/* 帖子导航提示样式 */
+.post-nav-hint {
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  border: 1px solid #e1e5e9;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.post-title-preview {
+  padding: 1rem 1.25rem;
+  background: white;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.title-meta-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.preview-title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1a202c;
+  line-height: 1.3;
+  flex-shrink: 0;
+}
+
+.post-meta-preview {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #5f6368;
+  font-size: 12px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.author-avatar-small {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author-name {
+  font-weight: 500;
+  color: #1a73e8;
+}
+
+.post-time-small {
+  color: #9aa0a6;
+}
+
+.back-to-post-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  background: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.back-to-post-btn:hover {
+  background: #1557b0;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(26, 115, 232, 0.3);
+}
+
+.back-to-post-btn i {
+  font-size: 12px;
+  color: white;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .post-title-preview {
+    padding: 0.75rem 1rem;
+  }
+  
+  .title-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  
+  .title-meta-group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+  }
+  
+  .preview-title {
+    font-size: 1rem;
+  }
+  
+  .post-meta-preview {
+    font-size: 11px;
+  }
+  
+  .back-to-post-btn {
+    align-self: flex-start;
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+}
+
+/* 简约分页样式 */
+.pagination-container {
+  padding: 0.75rem 1rem;
+  background-color: #fafbfc;
+  border-radius: 0;
+}
+
+/* 底部分页无边框 */
+.pagination-container.bottom-pagination {
+  border-bottom: none;
+}
+
+.modern-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+/* 分页按钮基础样式 - 简约风格 */
+.pagination-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 6px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  color: #666;
+  font-weight: 400;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+/* 悬停效果 - 简约 */
+.pagination-btn:hover:not(.disabled) {
+  background-color: #f5f5f5;
+  border-color: #bbb;
+  color: #333;
+}
+
+/* 页码按钮 */
+.page-number {
+  min-width: 28px;
+}
+
+.page-number.active {
+  background: #007bff;
+  border-color: #007bff;
+  color: white;
+}
+
+.page-number.active:hover {
+  background: #0056b3;
+  border-color: #0056b3;
+}
+
+/* 上一页/下一页按钮 */
+.prev-btn, .next-btn {
+  min-width: auto;
+  padding: 0 8px;
+  font-size: 12px;
+}
+
+.prev-btn i, .next-btn i {
+  font-size: 12px;
+}
+
+.prev-btn .btn-text {
+  margin-left: 4px;
+}
+
+.next-btn .btn-text {
+  margin-right: 4px;
+}
+
+/* 禁用状态 */
+.pagination-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #f8f9fa;
+  border-color: #ddd;
+  color: #999;
+}
+
+.pagination-btn.disabled:hover {
+  background-color: #f8f9fa;
+  border-color: #ddd;
+  color: #999;
+}
+
+/* 省略号 */
+.pagination-ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: #999;
+  font-size: 14px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .modern-pagination {
+    gap: 2px;
+  }
+  
+  .pagination-btn {
+    min-width: 26px;
+    height: 26px;
+    padding: 0 4px;
+    font-size: 12px;
+  }
+  
+  .prev-btn .btn-text,
+  .next-btn .btn-text {
+    display: none;
+  }
+  
+  .prev-btn, .next-btn {
+    min-width: 26px;
+    padding: 0;
+  }
+  
+  .pagination-ellipsis {
+    width: 26px;
+    height: 26px;
+    font-size: 12px;
+  }
+}
+
+.comment-form {
+  display: flex;
+  align-items: flex-start;
+  padding: 0.65rem 1rem; /* 减小padding */
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+  background-color: #f9fafb;
+}
+
+.comment-form .comment-avatar {
+  width: 2rem !important;
+  height: 2rem !important;
+  border-radius: 6px !important;
+  overflow: hidden !important;
+  flex-shrink: 0 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+  margin-right: 0.75rem !important;
+  margin-top: 0 !important;
+  transition: transform 0.3s ease !important;
+}
+
+.comment-form .comment-avatar:hover {
+  transform: translateY(-2px) !important;
+}
+
+.comment-avatar .avatar,
+.comment-avatar img {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 4px !important;
+  object-fit: cover !important;
+}
+
+.comment-input-area {
+  flex: 1;
+  position: relative;
+}
+
+/* 拖拽上传相关样式 */
+.comment-input-area.drag-over {
+  border-color: #3b82f6;
+  background-color: rgba(59, 130, 246, 0.05);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.comment-input-area.uploading {
+  border-color: #10b981;
+  background-color: rgba(16, 185, 129, 0.05);
+}
+
+.drag-overlay, .upload-progress-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 197, 253, 0.1));
+  backdrop-filter: blur(2px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  border-radius: 6px;
+  gap: 0.25rem;
+  border: 2px dashed #3b82f6;
+  transition: all 0.3s ease;
+}
+
+.upload-progress-overlay {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(34, 197, 94, 0.1));
+  border-color: #10b981;
+}
+
+.drag-icon, .upload-icon {
+  font-size: 1.5rem;
+  color: #3b82f6;
+  margin-bottom: 0.25rem;
+  opacity: 0.8;
+}
+
+.upload-icon {
+  color: #10b981;
+}
+
+.drag-overlay p, .upload-progress-overlay p {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.drag-overlay small, .upload-progress-overlay small {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin: 0;
+  opacity: 0.8;
+}
+
+/* 旋转动画在 main.css 中定义 */
+
+/* 一级评论的Markdown样式 */
+.comment-text .comment-image {
+  max-width: 480px;        /* 限制最大宽度，防止超宽图片 */
+  max-height: 320px;       /* 限制最大高度，防止超长图片 */
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+  margin: 0.5rem 0;        /* 稍微缩小间距 */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: #f8f9fa;
+  object-fit: cover;       /* 保持比例裁剪，避免拉伸 */
+  position: relative;
+  display: block;
+}
+
+.comment-text .comment-image:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.28);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+/* 图片点击指示器 */
+.comment-text .comment-image::after {
+  content: "🔍";
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 4px 6px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.comment-text .comment-image:hover::after {
+  opacity: 1;
+}
+
+.comment-text .comment-image:active {
+  transform: translateY(0);
+  transition: transform 0.1s ease;
+}
+
+/* 图片加载状态 */
+.comment-text .comment-image {
+  background: linear-gradient(90deg, #f0f0f0 25%, transparent 37%, #f0f0f0 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.comment-text .comment-image[src]:not([src=""]) {
+  display: inline;
+}
+
+/* 增强版评论图片样式 */
+.comment-text .comment-image-enhanced {
+  border: 2px solid rgba(59, 130, 246, 0.15);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  margin: 12px 0;
+  transform: scale(1.02);
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: block;
+  clear: both;
+}
+
+.comment-text .comment-image-enhanced:hover {
+  transform: scale(1.04) translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.comment-text .comment-image-enhanced::after {
+  content: "🔍 查看大图";
+  font-size: 0.8rem;
+}
+
+@keyframes shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* 图片容器，用于更好的布局控制 */
+.comment-text .comment-image {
+  /* 限制小图片的最小尺寸，防止太小难以查看 */
+  min-width: 120px;
+  min-height: 80px;
+}
+
+/* 响应式图片 - 移动端适配 */
+@media (max-width: 768px) {
+  .comment-text .comment-image {
+    max-width: 100%;         /* 移动端充满容器宽度 */
+    max-height: 240px;       /* 移动端降低最大高度 */
+    border-radius: 6px;
+    margin: 0.5rem 0;
+    min-width: 100px;
+    min-height: 60px;
+  }
+  
+  /* 移动端增强图片样式适配 */
+  .comment-text .comment-image-enhanced {
+    margin: 8px 0;
+    transform: scale(1.01);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+  
+  .comment-text .comment-image-enhanced:hover {
+    transform: scale(1.02) translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* 平板端适配 */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .comment-text .comment-image {
+    max-width: 400px;        /* 平板端中等尺寸 */
+    max-height: 280px;
+  }
+}
+
+/* 图片错误状态 */
+.comment-text .comment-image[alt]:after {
+  content: '🖼️ ' attr(alt);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  color: #666;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.comment-text .comment-image[src=""]:after,
+.comment-text .comment-image:not([src]):after {
+  opacity: 1;
+}
+
+/* 图片全屏预览模态框 */
+.image-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+.image-modal-content {
+  position: relative;
+  max-width: 95vw;
+  max-height: 95vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+}
+
+.image-modal-close {
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.image-modal-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.image-modal-controls {
+  position: absolute;
+  bottom: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.image-modal:hover .image-modal-controls {
+  opacity: 1;
+}
+
+.image-control-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.image-control-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.image-control-btn i {
+  font-size: 1rem;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .image-modal-close {
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.6);
+  }
+  
+  .image-modal-controls {
+    bottom: 20px;
+    opacity: 1;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .image-control-btn {
+    background: rgba(0, 0, 0, 0.6);
+    min-width: 120px;
+    justify-content: center;
+  }
+}
+
+.comment-text h1, .comment-text h2, .comment-text h3,
+.comment-text h4, .comment-text h5, .comment-text h6 {
+  margin: 1rem 0 0.5rem 0;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.comment-text h1 { font-size: 1.25rem; }
+.comment-text h2 { font-size: 1.125rem; }
+.comment-text h3 { font-size: 1rem; }
+.comment-text h4 { font-size: 0.875rem; }
+.comment-text h5 { font-size: 0.8rem; }
+.comment-text h6 { font-size: 0.75rem; }
+
+.comment-text strong {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.comment-text em {
+  font-style: italic;
+  color: #4b5563;
+}
+
+.comment-text code {
+  background-color: #f3f4f6;
+  color: #e11d48;
+  padding: 0.125rem 0.25rem;
+  border-radius: 3px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.8rem;
+}
+
+.comment-text pre {
+  background-color: #1f2937;
+  color: #f9fafb;
+  padding: 0.75rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 0.5rem 0;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.comment-text pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+  border-radius: 0;
+}
+
+.comment-text blockquote {
+  border-left: 3px solid #3b82f6;
+  padding-left: 0.75rem;
+  margin: 0.5rem 0;
+  color: #4b5563;
+  font-style: italic;
+  background-color: #f8fafc;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0 4px 4px 0;
+}
+
+.comment-text ul, .comment-text ol {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.comment-text li {
+  margin: 0.25rem 0;
+  line-height: 1.5;
+}
+
+.comment-text a {
+  color: #3b82f6;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.comment-text a:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.comment-text p {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.6 !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  display: inline !important;
+}
+
+.comment-text hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 1rem 0;
+}
+
+/* @提及用户的样式保持不变 */
+.mention-tag {
+  color: #3b82f6;
+  font-weight: 500;
+  background-color: rgba(59, 130, 246, 0.1);
+  padding: 0.125rem 0.25rem;
+  border-radius: 3px;
+  text-decoration: none;
+}
+
+.comment-editable {
+  min-height: 3.5rem;
+  max-height: 6rem;
+  overflow-y: auto;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  outline: none;
+  transition: all 0.2s ease;
+  background-color: white;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03) inset;
+  white-space: pre-wrap; /* 保持空格和换行符的显示 */
+}
+
+.comment-editable:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.comment-editable:empty::before {
+  content: attr(placeholder);
+  color: #94a3b8;
+}
+
+.comment-tips {
+  margin-top: 0.3rem;
+  font-size: 0.7rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0;
+}
+
+.comment-tips i {
+  margin-right: 0.2rem;
+  font-size: 0.72rem;
+  color: #3b82f6;
+  flex-shrink: 0;
+}
+
+.comment-tips span {
+  flex: 1;
+  line-height: 1.3;
+  margin: 0;
+}
+
+/* 全新的发布按钮 - 完全独立的样式 */
+.publish-comment-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 0.8rem;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  box-shadow: none;
+  outline: none;
+  white-space: nowrap;
+}
+
+.publish-comment-button:hover:not(:disabled) {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+.publish-comment-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.login-to-comment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  color: #666;
+  background-color: #f9fafb;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.login-to-comment p {
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.login-link {
+  text-decoration: none;
+}
+
+.comments-wrapper {
+  padding: 0; /* 桌面端移除padding，让评论占满容器 */
+  background: white;
+}
+
+.comments-loading,
+.no-comments {
+  padding: 1.5rem; /* 减小padding */
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 2rem;
+  color: #cbd5e1;
+  margin-bottom: 0.75rem;
+}
+
+.no-comments p {
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.comments-list {
+  background: white;
+  border-bottom: none; /* 移除评论列表底部的边框 */
+}
+
+/* 评论项样式 - 模仿NodeSeek的简洁风格，与首页post高度一致 */
+.comment-item {
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.2s ease;
+  position: relative;
+  cursor: default;
+  display: flex;
+  flex-direction: column; /* 改为垂直布局，支持回复表单等内容 */
+}
+
+/* 评论主要内容区域 - 固定高度确保一致性 */
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  width: 100%; /* 确保占满容器宽度 */
+  min-height: 40px; /* 设置固定的主要内容区域高度 */
+}
+
+/* 评论项左侧蓝色条 - 协调尺寸 */
+.comment-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 2px; /* 缩小蓝条宽度，从3px改为2px */
+  background: linear-gradient(to bottom, #3b82f6, #6366f1);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.comment-item:hover {
+  background-color: #f8fafc;
+  transform: none;
+}
+
+.comment-item:hover::before {
+  opacity: 1;
+}
+
+.comment-item:last-child {
+  border-bottom: 1px solid #f0f0f0; /* 确保最后一条评论也有分割线 */
+}
+
+.comment-item[data-comment-id^="temp-"],
+.comment-item.temp-comment {
+  animation: comment-appear 0.5s ease;
+  background-color: rgba(59, 130, 246, 0.05);
+}
+
+@keyframes comment-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+    background-color: rgba(59, 130, 246, 0.1);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    background-color: rgba(59, 130, 246, 0.05);
+  }
+}
+
+.comment-author {
+  display: flex;
+  align-items: flex-start; /* 确保顶部对齐 */
+  gap: 0.3rem !important;
+  flex: 1;
+}
+
+.comment-author .comment-avatar {
+  width: 2rem !important;
+  height: 2rem !important;
+  border-radius: 4px !important;
+  overflow: hidden !important;
+  flex-shrink: 0 !important;
+  margin: 0 0.5rem 0 0 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+  align-self: flex-start !important;
+}
+
+.comment-avatar .avatar,
+.comment-avatar img {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 4px !important;
+  object-fit: cover !important;
+}
+
+.comment-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start !important;
+  padding: 0 !important; /* 移除所有内边距 */
+  margin: 0 !important; /* 移除所有外边距 */
+}
+
+.comment-name-time {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0 0 0.15rem 0 !important; /* 只保留底部边距 */
+  line-height: 1 !important; /* 减小行高，避免上下留白 */
+}
+
+.comment-name {
+  font-weight: 600;
+  color: #1a202c;
+  font-size: 0.85rem;
+  line-height: 1 !important; /* 精确控制行高 */
+  margin: 0 !important;
+  padding: 0 !important;
+  display: inline-block !important; /* 确保正确显示 */
+}
+
+.comment-time {
+  font-size: 0.7rem;
+  color: #64748b;
+  line-height: 1 !important; /* 精确控制行高 */
+  margin: 0 !important;
+  padding: 0 !important;
+  display: inline-block !important; /* 确保正确显示 */
+}
+
+.comment-text {
+  color: #2d3748;
+  line-height: 1.6;
+  font-size: 0.85rem;
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: auto;
+  max-height: none;
+  overflow: visible;
+  flex: 1;
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+/* 处理评论文本中的HTML标签 */
+.comment-text div {
+  display: block;
+  margin: 8px 0;
+  padding: 0;
+}
+
+.comment-text br {
+  display: block;
+  margin: 8px 0;
+}
+
+.comment-text p {
+  margin: 8px 0;
+  padding: 0;
+  display: block;
+}
+
+/* 评论操作按钮 - 移到最右边 */
+.comment-actions {
+  display: flex;
+  gap: 0.35rem; /* 稍微增加间距 */
+  align-items: flex-start; /* 改为顶部对齐 */
+  flex-shrink: 0;
+  margin-top: 0.05rem; /* 与头像位置对齐 */
+}
+
+.comment-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem; /* 稍微增加padding */
+  background: none;
+  border: none;
+  border-radius: 4px; /* 稍微增大圆角 */
+  color: #64748b;
+  font-size: 0.72rem; /* 稍微增大字体 */
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.comment-action-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: currentColor;
+  border-radius: 50%;
+  opacity: 0.1;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+}
+
+.comment-action-btn:hover::before {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+}
+
+.comment-action-btn:hover {
+  background-color: #f1f5f9;
+  color: #475569;
+  transform: translateY(-1px);
+}
+
+.comment-action-btn:active {
+  transform: translateY(0);
+}
+
+.comment-action-btn.liked {
+  color: #16a34a;
+  background-color: rgba(22, 163, 74, 0.1);
+}
+
+.comment-action-btn.liked:hover {
+  background-color: rgba(22, 163, 74, 0.15);
+}
+
+.comment-action-btn.disliked {
+  color: #dc2626;
+  background-color: rgba(220, 38, 38, 0.1);
+}
+
+.comment-action-btn.disliked:hover {
+  background-color: rgba(220, 38, 38, 0.15);
+}
+
+.reply-btn {
+  background: none;
+  color: #3b82f6;
+}
+
+.reply-btn:hover {
+  background: #eff6ff;
+}
+
+/* 查看全部回复按钮 - 与其他按钮平行显示 */
+.view-all-replies-btn,
+.toggle-replies-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  color: #3b82f6;
+  font-size: 0.72rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+}
+
+.view-all-replies-btn::before,
+.toggle-replies-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: currentColor;
+  border-radius: 50%;
+  opacity: 0.1;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+}
+
+.view-all-replies-btn:hover::before,
+.toggle-replies-btn:hover::before {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+}
+
+.view-all-replies-btn:hover,
+.toggle-replies-btn:hover {
+  background-color: #eff6ff;
+  transform: translateY(-1px);
+}
+
+.view-all-replies-btn i,
+.toggle-replies-btn i {
+  margin-right: 0;
+  font-size: 0.72rem;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .comments-section {
+    border-radius: 6px;
+  }
+  
+  .section-header {
+    padding: 0.6rem 0.85rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  
+  .section-header h2 {
+    font-size: 0.85rem;
+  }
+  
+  .header-pagination {
+    align-self: center;
+  }
+  
+  .header-pagination .pagination-btn {
+    min-width: 22px;
+    height: 22px;
+    padding: 0 3px;
+    font-size: 10px;
+  }
+  
+  .header-pagination .prev-btn .btn-text,
+  .header-pagination .next-btn .btn-text {
+    display: none;
+  }
+  
+  .header-pagination .prev-btn,
+  .header-pagination .next-btn {
+    min-width: 22px;
+    padding: 0;
+  }
+  
+  .pagination-container {
+    padding: 0.5rem 0.85rem;
+  }
+  
+  .comment-form {
+    padding: 0.6rem 0.85rem;
+  }
+  
+  .comments-wrapper {
+    padding: 0;
+  }
+  
+  .comment-item {
+    padding: 0.55rem 0.85rem; /* 移动端稍微减小 */
+  }
+  
+  .comment-author {
+    gap: 0.45rem;
+  }
+  
+  .comment-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.4rem;
+  }
+  
+  .comment-actions {
+    justify-content: flex-start;
+    gap: 0.3rem; /* 移动端稍微减小按钮间距 */
+  }
+  
+  .comment-action-btn {
+    padding: 0.2rem 0.4rem; /* 移动端稍微减小按钮 */
+    font-size: 0.68rem;
+  }
+  
+  .view-all-replies-btn,
+  .toggle-replies-btn {
+    margin: 0;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.72rem;
+  }
+}
+
+/* Markdown 工具栏样式 */
+.comment-markdown-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.comment-markdown-toolbar.reply-toolbar {
+  padding: 0.375rem 0;
+  margin-bottom: 0.375rem;
+}
+
+.comment-markdown-toolbar .toolbar-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: none;
+  background: none;
+  border-radius: 4px;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 0.875rem;
+}
+
+.comment-markdown-toolbar .toolbar-btn:hover {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.comment-markdown-toolbar .toolbar-btn:active {
+  transform: scale(0.95);
+}
+
+/* 表情按钮特殊样式 */
+.comment-markdown-toolbar .emoji-btn {
+  position: relative;
+}
+
+/* 表情选择器样式 */
+.emoji-picker {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  z-index: 50;
+  overflow: hidden;
+  animation: fadeInUp 0.2s ease;
+}
+
+.emoji-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.close-emoji {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: none;
+  background: none;
+  border-radius: 4px;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.close-emoji:hover {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 0.25rem;
+  padding: 0.75rem;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.emoji-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background: none;
+  border-radius: 4px;
+  font-size: 1.125rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.emoji-item:hover {
+  background: #f3f4f6;
+  transform: scale(1.1);
+}
+
+.emoji-item:active {
+  transform: scale(0.95);
+}
+
+/* 动画效果 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .comment-markdown-toolbar {
+    padding: 0.375rem 0;
+    gap: 0.125rem;
+  }
+  
+  .comment-markdown-toolbar .toolbar-btn {
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 0.8rem;
+  }
+  
+  .emoji-grid {
+    grid-template-columns: repeat(8, 1fr);
+    padding: 0.5rem;
+  }
+  
+  .emoji-item {
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 1rem;
+  }
+}
+
+/* 简单工具栏样式 */
+.simple-toolbar {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 0.5rem;
+}
+
+.simple-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: none;
+  background: none;
+  border-radius: 4px;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 0.875rem;
+}
+
+.simple-btn:hover {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.simple-btn:active {
+  transform: scale(0.95);
+}
+
+/* 评论中的content-image样式 - 修复图片尺寸问题 */
+.comment-text .content-image {
+  max-width: min(480px, 100%) !important;
+  max-height: 320px !important;
+  width: auto !important;
+  height: auto !important;
+  border-radius: 8px;
+  margin: 0.25rem 0 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: #f8f9fa;
+  object-fit: cover;
+  position: relative;
+  display: block !important;
+}
+
+.comment-text .content-image:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+/* 移动端评论图片适配 */
+@media (max-width: 768px) {
+  .comment-text .content-image {
+    max-width: 100% !important;
+    max-height: 240px !important;
+    margin: 0.125rem 0 !important;
+  }
+}
+
+/* 图片占位符样式 */
+.comment-text .img-placeholder {
+  display: inline-block;
+  background-color: #f1f5f9;
+  color: #64748b;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  margin: 0 2px;
+  border: 1px dashed #cbd5e0;
+}

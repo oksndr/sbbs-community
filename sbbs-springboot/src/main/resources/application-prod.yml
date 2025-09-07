@@ -1,0 +1,87 @@
+server:
+  port: 61234
+spring:
+  application:
+    name: sbbs
+  servlet:
+    multipart:
+      max-file-size: 5MB      # 单个文件最大5MB
+      max-request-size: 10MB  # 整个请求最大10MB
+  datasource:
+    druid:
+      driver-class-name: org.postgresql.Driver
+      url: jdbc:postgresql://167.example.example.example:example/sbbs
+      username: example
+      password: example
+  redis:
+    host: example
+    port: 10666
+    database: 0
+    password: example
+  cache:
+    redis:
+      time-to-live: 1800000 #设置缓存过期时间
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    com.itheima.sbbs: DEBUG  # 生产环境使用INFO级别
+    org.springframework: WARN
+
+mybatis-plus:
+  configuration:
+    #在映射实体或者属性时，将数据库中表名和字段名中的下划线去掉，按照驼峰命名法映射
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+
+# Sa-Token 配置
+sa-token:
+  # jwt秘钥
+  jwt-secret-key: example # 请替换为您的实际密钥
+  # token名称 (同时也是cookie名称)  这里官方文档的快速入门中使用的是satoken
+  token-name: Authorization
+  # token前缀 在前端代码中需要加入该前缀，具体可看后文
+  token-prefix: Bearer
+  # 是否从header中读取token
+  is-read-header: true
+  # token有效期，单位s 默认30天, -1代表永不过期
+  timeout: 604800
+  # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒
+  activity-timeout: -1
+  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
+  is-share: true
+  # token风格
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: true
+
+image:
+  upload:
+    url: https://img.example.me/api/index.php
+    token: 12345678 # 请替换为您的实际token
+
+# 防抖配置
+app:
+  debounce:
+    like-timeout: 2      # 点赞操作防抖时间（秒）
+    dislike-timeout: 2   # 点踩操作防抖时间（秒）
+    comment-timeout: 5   # 评论操作防抖时间（秒）
+    post-timeout: 10     # 发帖操作防抖时间（秒）
+
+# 邮件配置
+mail:
+  host: smtp.exmail.qq.com
+  port: 465
+  username: example
+  password: "example"
+  from-name: sbbs论坛
+  ssl-enabled: true
+  tls-enabled: false
+
+

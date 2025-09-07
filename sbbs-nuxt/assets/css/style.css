@@ -1,0 +1,176 @@
+/* SBBS社区 - 通用样式 */
+:root {
+  --border-color: #e5e7eb;
+  --bg-color: #f5f5f5;
+  --card-bg: #fff;
+  --text-color: #333;
+  --text-secondary: #6b7280;
+  --primary-color: #3b82f6;
+  --hover-color: #f3f4f6;
+}
+
+body {
+  background-color: var(--bg-color);
+  background-image: linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--text-color);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.grid-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.content-section {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.section-header {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+}
+
+.section-header h2 {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  margin: 0;
+  color: #111;
+}
+
+.post-card {
+  background-color: var(--card-bg);
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03);
+  transition: box-shadow 0.3s ease;
+}
+
+.post-card:hover {
+  box-shadow: 0 6px 30px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.03);
+}
+
+.post-item {
+  display: flex;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.15s;
+}
+
+.post-item:hover {
+  background-color: var(--hover-color);
+}
+
+.post-item:last-child {
+  border-bottom: none;
+}
+
+.post-item-avatar-area {
+  margin-right: 1rem;
+  flex-shrink: 0;
+}
+
+.post-item-avatar {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.post-item-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.post-item-title-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.post-item-title {
+  font-weight: 600;
+  color: #111;
+  text-decoration: none;
+  transition: color 0.15s;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 1rem;
+}
+
+.post-item-title:hover {
+  color: var(--primary-color);
+}
+
+.post-item-tag {
+  font-size: 0.75rem;
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+  background-color: #eef2ff;
+  color: #4f46e5;
+  text-decoration: none;
+  flex-shrink: 0;
+  font-weight: 500;
+}
+
+.post-item-tag:hover {
+  background-color: #e0e7ff;
+}
+
+.post-item-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* Markdown样式 */
+.markdown-body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  padding: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+  position: relative;
+}
+
+.markdown-body img {
+  max-height: 600px;
+  object-fit: contain;
+}
+
+/* 登录表单样式 */
+.auth-container {
+  max-width: 550px;
+  width: 90%;
+  padding: 2.5rem 3rem;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 8px 16px rgba(83, 100, 247, 0.1), 0 2px 4px rgba(83, 100, 247, 0.06);
+  border: 1px solid #e8ebf8;
+  margin: 2rem auto;
+} 

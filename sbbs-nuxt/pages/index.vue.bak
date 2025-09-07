@@ -1,0 +1,606 @@
+<template>
+  <LayoutWithSidebar>
+    <!-- 内容部分 -->
+    <div class="grid-layout">
+      <!-- 左侧内容区 -->
+      <div class="main-content">
+        <!-- 搜索结果区域 -->
+        <div v-if="isSearchMode" class="content-section">
+          <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <h2>{{ searchType === 'post' ? '帖子' : '用户' }}搜索结果: "{{ searchKeyword }}"</h2>
+            <button @click="clearSearch" class="btn btn-outline btn-sm">
+              <i class="ri-close-line"></i> 清除搜索
+            </button>
+          </div>
+          
+          <div v-if="isSearchLoading" class="loading-spinner">
+            <span class="custom-loader"></span> 搜索中...
+          </div>
+
+          <!-- 帖子搜索结果 -->
+          <div v-if="searchType === 'post' && !isSearchLoading" class="post-list">
+            <div v-if="searchResults.length === 0" style="text-align:center; padding: 2rem; color: var(--text-secondary);">
+              未找到匹配的帖子
+            </div>
+            
+            <div v-for="post in searchResults" :key="post.id" :id="'post-' + post.id" class="post-item" :class="{ 'highlight-new-post': shouldHighlightPost && shouldHighlightPost(post.title) }" @click="goToPostDetail(post.id)">
+              <div class="post-item-avatar-area">
+                <img :src="post.avatar" alt="User Avatar" class="post-item-avatar"/>
+              </div>
+              <div class="post-item-details">
+                <div class="post-item-title-line">
+                  <div class="title-left">
+                    <NuxtLink :to="`/post/${post.id}`" 
+                              class="post-item-title"
+                              @click.stop="markAsRead(post.id)">{{ post.title }}</NuxtLink>
+                  </div>
+                  <div class="post-tags">
+                    <template v-if="post.tags && post.tags.length > 0">
+                      <a v-for="(tagName, index) in post.tags" 
+                         :key="index"
+                         href="#" 
+                         @click.prevent.stop="filterByTagName(tagName)" 
+                         class="post-item-tag">
+                        {{ tagName }}
+                      </a>
+                    </template>
+                    <template v-else-if="post.tagIdsStringAlias">
+                      <a v-for="tagId in post.tagIdsStringAlias.split(',')" 
+                         :key="tagId"
+                         href="#" 
+                         @click.prevent.stop="filterByTag(tagId.trim())" 
+                         class="post-item-tag">
+                        {{ getTagName(tagId.trim()) }}
+                      </a>
+                    </template>
+                  </div>
+                </div>
+                <div class="post-item-meta">
+                  <span class="post-item-author" @click.stop="goToUserProfile(post.userId)">
+                    <i class="ri-user-3-line"></i>{{ post.username }}</span>
+                  <span class="meta-time">
+                    <i class="ri-calendar-line"></i>发布 {{ formatTimeAgo(post.created) }}</span>
+                  <span v-if="post.updated" class="meta-time">
+                    <i class="ri-time-line"></i>活跃 {{ formatTimeAgo(post.updated) }}</span>
+                  <div class="post-stats">
+                    <span class="meta-stats like">
+                      <i class="ri-thumb-up-line"></i>{{ post.likeCount || 0 }}</span>
+                    <span class="meta-stats dislike">
+                      <i class="ri-thumb-down-line"></i>{{ post.dislikeCount || 0 }}</span>
+                    <span class="meta-stats comments">
+                      <i class="ri-chat-1-line"></i>{{ post.commentCount || 0 }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 用户搜索结果 -->
+          <div v-if="searchType === 'user' && !isSearchLoading">
+            <div v-if="searchResults.length === 0" style="text-align:center; padding: 2rem; color: var(--text-secondary);">
+              未找到匹配的用户
+            </div>
+            
+            <div v-for="user in searchResults" :key="user.id" style="padding: 1rem; display: flex; align-items: center; border-bottom: 1px solid var(--border-color);">
+              <img :src="user.avatar" :alt="user.username" style="width: 50px; height: 50px; border-radius: 8px; margin-right: 1rem; object-fit: cover;"/>
+              <div>
+                <div style="font-weight: 600; font-size: 1rem; color: #333;">{{ user.username }}</div>
+                <div style="margin-top: 0.5rem;">
+                  <button @click="goToUserProfile(user.id)" class="btn btn-outline btn-sm">
+                    <i class="ri-user-line"></i> 查看主页
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 帖子列表区域 -->
+        <div v-if="!isSearchMode" class="content-section">
+          <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <h2>最新帖子</h2>
+            <NuxtLink to="/post/publish" class="btn btn-primary btn-sm">发布新帖</NuxtLink>
+          </div>
+          
+          <div class="content-actions">
+            <div class="action-tabs">
+              <div class="action-tab active">最新</div>
+              <div class="action-tab">热门</div>
+              <div class="action-tab">精华</div>
+            </div>
+          </div>
+
+          <div v-if="isLoading && posts.length === 0" class="loading-spinner">
+            <span class="custom-loader"></span> 加载中...
+          </div>
+
+          <div v-if="!isLoading && posts.length === 0 && !isSearchMode" style="text-align:center; padding: 2rem; color: var(--text-secondary);">
+            暂无帖子
+          </div>
+
+          <div class="post-list" v-if="posts.length > 0">
+            <!-- 帖子列表 -->
+            <div v-for="post in posts" 
+                 :key="post.id" 
+                 :id="'post-' + post.id"
+                 class="post-item" 
+                 :class="{ 'highlight-new-post': shouldHighlightPost && shouldHighlightPost(post.title) }"
+                 @click="goToPostDetail(post.id)">
+              <div class="post-item-avatar-area">
+                <img :src="post.avatar" alt="User Avatar" class="post-item-avatar"/>
+              </div>
+              <div class="post-item-details">
+                <div class="post-item-title-line">
+                  <div class="title-left">
+                    <span v-if="isUnreadPost(post.id)" class="unread-badge">New</span>
+                    <NuxtLink :to="`/post/${post.id}`" 
+                              class="post-item-title"
+                              @click.stop="markAsRead(post.id)">{{ post.title }}</NuxtLink>
+                  </div>
+                  <div class="post-tags">
+                    <template v-if="post.tags && post.tags.length > 0">
+                      <a v-for="(tagName, index) in post.tags" 
+                         :key="index"
+                         href="#" 
+                         @click.prevent.stop="filterByTagName(tagName)" 
+                         class="post-item-tag">
+                        {{ tagName }}
+                      </a>
+                    </template>
+                    <template v-else-if="post.tagIdsStringAlias">
+                      <a v-for="tagId in post.tagIdsStringAlias.split(',')" 
+                         :key="tagId"
+                         href="#" 
+                         @click.prevent.stop="filterByTag(tagId.trim())" 
+                         class="post-item-tag">
+                        {{ getTagName(tagId.trim()) }}
+                      </a>
+                    </template>
+                  </div>
+                </div>
+                
+                <div class="post-item-meta">
+                  <span class="post-item-author" @click.stop="goToUserProfile(post.userId)">
+                    <i class="ri-user-3-line"></i>{{ post.username }}</span>
+                    <span class="meta-time">
+                      <i class="ri-calendar-line"></i>发布 {{ formatTimeAgo(post.created) }}</span>
+                    <span v-if="post.updated" class="meta-time">
+                      <i class="ri-time-line"></i>活跃 {{ formatTimeAgo(post.updated) }}</span>
+                    <div class="post-stats">
+                      <span class="meta-stats like">
+                        <i class="ri-thumb-up-line"></i>{{ post.likeCount || 0 }}</span>
+                      <span class="meta-stats dislike">
+                        <i class="ri-thumb-down-line"></i>{{ post.dislikeCount || 0 }}</span>
+                      <span class="meta-stats comments">
+                        <i class="ri-chat-1-line"></i>{{ post.commentCount || 0 }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 分页加载状态显示 -->
+          <div v-if="isLoadingMore" class="load-more-container">
+            <div class="load-more-content">
+              <span class="custom-loader"></span> 加载更多中...
+            </div>
+          </div>
+          <div v-if="isLoadMoreDisabled && posts.length > 0 && !isSearchMode" style="text-align: center; padding: 1rem 0; color: #999; font-size: 0.875rem;">
+            已经到底啦 ~
+          </div>
+        </div>
+      </div>
+    </div>
+  </LayoutWithSidebar>
+</template>
+
+<script setup>
+import { ref, onMounted, computed, onUnmounted, inject } from 'vue'
+import { useRouter, useRoute } from '#app'
+import { useUserStore } from '~/stores/user'
+import { API } from '~/utils/api'
+import LayoutWithSidebar from '~/components/LayoutWithSidebar.vue'
+
+const router = useRouter()
+const userStore = useUserStore()
+const route = useRoute()
+
+// 帖子数据
+const posts = ref([]) 
+const isLoading = ref(false) 
+const error = ref(null) 
+const hasMorePosts = ref(true) 
+
+// 统计信息
+const communityStats = ref({
+  totalPosts: 0,
+  totalUsers: 0,
+  newPostsToday: 0,
+  newUsersToday: 0
+})
+
+// 热门标签
+const tags = ref([])
+
+// 数据
+const isLoggedIn = ref(false);
+const userInfo = ref(null);
+const selectedTagId = ref(null);
+const isLoadingMore = ref(false);
+const isLoadMoreDisabled = ref(false);
+const limit = ref(15); 
+const searchKeyword = ref('');
+const searchType = ref('post');
+const showSearchTypeDropdown = ref(false);
+const isSearchMode = ref(false);
+const isSearchLoading = ref(false);
+const searchResults = ref([]);
+const readPosts = ref(new Set());
+const lastId = ref(null);
+const lastUpdated = ref(null);
+const highlightNewPost = ref(false);
+const latestPostTitle = ref('');
+
+// 注入高亮检测函数
+const shouldHighlightPost = inject('shouldHighlightPost');
+
+// 方法
+const fetchTags = async () => {
+  try {
+    const response = await API.tags.getAllTags();
+    if (response.code === 200) {
+      tags.value = response.data || [];
+    }
+  } catch (error) {
+    console.error('获取标签失败', error);
+  }
+}
+
+// 获取帖子列表
+const fetchPosts = async (loadMore = false) => {
+  if (isLoading.value || (loadMore && isLoadingMore.value)) return;
+
+  if (loadMore) {
+    isLoadingMore.value = true;
+  } else {
+  isLoading.value = true;
+    posts.value = [] 
+    lastId.value = null
+    lastUpdated.value = null
+    isLoadMoreDisabled.value = false // 重置
+  }
+
+  try {
+    const params = {
+      pageSize: limit.value
+    };
+    
+    if (loadMore && lastId.value) {
+      params.lastId = lastId.value;
+    }
+    
+    if (loadMore && lastUpdated.value) {
+      params.lastUpdated = lastUpdated.value;
+    }
+    
+    if (selectedTagId.value !== null) {
+      params.tagId = selectedTagId.value;
+    }
+    
+    const response = await API.posts.getList(params);
+
+    if (response.code === 200 && response.data && response.data.list) {
+      const newPosts = response.data.list;
+      
+      if (loadMore) {
+        posts.value = [...posts.value, ...newPosts];
+      } else {
+        posts.value = newPosts;
+      }
+      
+      if (newPosts.length > 0) {
+        lastId.value = response.data.lastId;
+        lastUpdated.value = response.data.lastUpdated;
+      }
+      
+      isLoadMoreDisabled.value = newPosts.length < params.pageSize;
+      hasMorePosts.value = !isLoadMoreDisabled.value 
+    } else {
+      console.error('获取帖子列表失败:', response.msg);
+      error.value = response.msg || '获取帖子列表失败';
+    }
+  } catch (err) {
+    console.error('获取帖子列表异常:', err);
+    error.value = err.message || '获取帖子列表异常';
+  } finally {
+    isLoading.value = false;
+    isLoadingMore.value = false;
+  }
+};
+
+// 加载更多帖子
+const loadMorePosts = () => {
+  if (isLoadingMore.value || isLoadMoreDisabled.value || !hasMorePosts.value) return;
+  fetchPosts(true);
+};
+
+// 获取社区统计信息
+const fetchCommunityStats = async () => {
+  try {
+    const response = await API.stats.getOverview();
+    if (response.code === 200) {
+      communityStats.value = response.data || {};
+    }
+  } catch (error) {
+    console.error('获取社区统计失败', error);
+  }
+}
+
+// 按标签筛选
+const filterByTag = (tagId) => {
+  selectedTagId.value = tagId;
+  isSearchMode.value = false; 
+  fetchPosts(); 
+};
+
+// 按标签名筛选 (如果需要)
+const filterByTagName = (tagName) => {
+  const tag = tags.value.find(t => t.name === tagName);
+  if (tag) {
+    filterByTag(tag.id);
+  }
+};
+
+// 获取标签名称
+const getTagName = (tagId) => {
+  if (tagId === null || tagId === undefined) return '';
+  const tag = tags.value.find(t => String(t.id) === String(tagId));
+  return tag ? tag.name : '';
+};
+
+// 获取标签图标
+const getTagIcon = (tagId) => {
+  switch (String(tagId)) {
+    case '1': return 'ri-lightbulb-line'; 
+    case '2': return 'ri-question-answer-line'; 
+    default: return 'ri-hashtag'; 
+  }
+};
+
+// 搜索内容
+const searchContent = async () => {
+  if (!searchKeyword.value.trim()) return;
+  isSearchMode.value = true;
+  isSearchLoading.value = true;
+  searchResults.value = [];
+  try {
+    const params = {
+      type: searchType.value,
+      keyword: searchKeyword.value.trim()
+    };
+    let token = '';
+    if (process.client) {
+      token = localStorage.getItem('token') || '';
+    }
+    const response = await fetch(`http://localhost:12367/search?type=${params.type}&keyword=${encodeURIComponent(params.keyword)}`, {
+      headers: {
+        'Authorization': token ? `Bearer ${token}` : ''
+      }
+    });
+    const data = await response.json();
+    if (data.code === 200) {
+      searchResults.value = data.data || [];
+    } else {
+      console.error('搜索失败', data.msg);
+      searchResults.value = [];
+    }
+  } catch (error) {
+    console.error('搜索请求出错', error);
+    searchResults.value = [];
+  } finally {
+    isSearchLoading.value = false;
+  }
+};
+
+// 清除搜索结果
+const clearSearch = () => {
+  isSearchMode.value = false;
+  searchKeyword.value = '';
+  searchResults.value = [];
+  selectedTagId.value = null; 
+  fetchPosts(); 
+};
+
+const toggleSearchTypeDropdown = () => {
+  showSearchTypeDropdown.value = !showSearchTypeDropdown.value;
+};
+
+const selectSearchType = (type) => {
+  searchType.value = type;
+  showSearchTypeDropdown.value = false;
+};
+
+// 检查登录状态
+const checkLogin = () => {
+  userStore.initUserFromStorage()
+  isLoggedIn.value = userStore.isLoggedIn
+  userInfo.value = userStore.user
+  }
+
+// 退出登录
+const logout = () => {
+  userStore.logout()
+  isLoggedIn.value = false
+  userInfo.value = null
+  router.push('/'); // 退出后返回首页，刷新状态
+}
+
+// 获取用户头像
+const getUserAvatar = (userId) => {
+  return (userInfo.value && userInfo.value.avatar) 
+         ? userInfo.value.avatar 
+         : `https://i.pravatar.cc/150?u=${userId || 'default'}`;
+};
+
+// 处理滚动事件，实现无限加载
+const handleScroll = () => {
+  if (isSearchMode.value || isLoading.value || isLoadingMore.value || isLoadMoreDisabled.value || !hasMorePosts.value) return;
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  const windowHeight = window.innerHeight;
+  const documentHeight = document.documentElement.scrollHeight; // 使用scrollHeight更可靠
+  if (scrollTop + windowHeight >= documentHeight - 200) {
+    loadMorePosts();
+  }
+}
+
+// 跳转到帖子详情页
+const goToPostDetail = (postId) => {
+  router.push(`/post/${postId}`)
+}
+
+// 跳转到用户主页
+const goToUserProfile = (userId) => {
+  if (userId) { // 确保userId有效
+     router.push(`/user/${userId}`)
+  }
+}
+
+// 标记帖子为已读
+const markAsRead = (postId) => {
+  if (!readPosts.value.has(postId)) {
+    readPosts.value.add(postId);
+    if (process.client) {
+      localStorage.setItem('readPosts', JSON.stringify(Array.from(readPosts.value)));
+    }
+  }
+};
+
+// 检查帖子是否已读
+const isUnreadPost = (postId) => {
+  return !readPosts.value.has(postId);
+};
+
+// 格式化时间为"多久之前"
+const formatTimeAgo = (timestamp) => {
+  if (!timestamp) return '';
+  const now = Date.now();
+  const past = new Date(timestamp).getTime();
+  const diffInSeconds = Math.floor((now - past) / 1000);
+  if (diffInSeconds < 60) return `${diffInSeconds} 秒前`;
+  if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} 分钟前`;
+  if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} 小时前`;
+    return `${Math.floor(diffInSeconds / 86400)} 天前`;
+};
+
+// 生命周期钩子
+onMounted(() => {
+  if (process.client) {
+    try {
+      const savedReadPosts = JSON.parse(localStorage.getItem('readPosts') || '[]');
+      readPosts.value = new Set(savedReadPosts);
+    } catch (error) {
+      console.error('读取已读帖子失败', error);
+      readPosts.value = new Set();
+    }
+  window.addEventListener('scroll', handleScroll);
+    
+    // 监听标签筛选变化事件
+    window.addEventListener('tag-filter-changed', (event) => {
+      selectedTagId.value = event.detail.tagId;
+      fetchPosts();
+});
+
+    // 监听搜索事件
+    window.addEventListener('search-content', (event) => {
+      searchKeyword.value = event.detail.keyword;
+      searchType.value = event.detail.type;
+      searchContent();
+    });
+    
+    // 检查URL参数是否有标签ID
+    const urlParams = new URLSearchParams(window.location.search);
+    const tagId = urlParams.get('tagId');
+    if (tagId) {
+      selectedTagId.value = tagId;
+    }
+    
+    // 检查URL参数是否有搜索关键词
+    const searchParam = urlParams.get('search');
+    const typeParam = urlParams.get('type');
+    if (searchParam) {
+      searchKeyword.value = searchParam;
+      if (typeParam) {
+        searchType.value = typeParam;
+      }
+      searchContent();
+    }
+
+    // 检查是否需要高亮显示最新发布的帖子
+    if (route.query.highlight === 'new' && process.client) {
+      // 从localStorage获取最新发布的帖子标题
+      const savedTitle = localStorage.getItem('sbbs-latest-post-title');
+      const savedTime = localStorage.getItem('sbbs-latest-post-time');
+      
+      if (savedTitle && savedTime) {
+        // 检查发布时间是否在最近5分钟内
+        const publishTime = parseInt(savedTime);
+        const currentTime = new Date().getTime();
+        const fiveMinutes = 5 * 60 * 1000;
+        
+        if (currentTime - publishTime < fiveMinutes) {
+          latestPostTitle.value = savedTitle;
+          highlightNewPost.value = true;
+          
+          // 设置一个定时器，在一段时间后取消高亮
+          setTimeout(() => {
+            highlightNewPost.value = false;
+          }, 5000); // 5秒后取消高亮
+        }
+      }
+    }
+  }
+  checkLogin();
+  fetchTags();
+  fetchPosts();
+  if (isLoggedIn.value) {
+    fetchCommunityStats();
+  }
+});
+
+onUnmounted(() => {
+  if (process.client) {
+  window.removeEventListener('scroll', handleScroll);
+    window.removeEventListener('tag-filter-changed', () => {});
+    window.removeEventListener('search-content', () => {});
+  }
+});
+
+definePageMeta({
+  layout: 'default'
+})
+
+useHead({
+  title: 'SBBS社区 - 首页',
+  meta: [
+    { name: 'description', content: 'SBBS社区 - 一个现代化的社区论坛' }
+  ]
+})
+</script>
+
+<style scoped>
+.content-section {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.title-left {
+  display: flex;
+  align-items: center;
+  min-width: 0; /* 允许内容压缩 */
+  flex: 1;
+}
+</style> 

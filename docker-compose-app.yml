@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  # 后端服务
+  sbbs-backend:
+    build:
+      context: ./sbbs-springboot
+      dockerfile: Dockerfile
+    container_name: sbbs-backend
+    restart: unless-stopped
+    ports:
+      - "61234:61234"  # 后端端口
+    volumes:
+      - ./sbbs-springboot/logs:/app/logs
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - TZ=Asia/Shanghai
+    networks:
+      - sbbs-network
+
+  # 前端服务
+  sbbs-frontend:
+    build:
+      context: ./sbbs-nuxt
+      dockerfile: Dockerfile
+    container_name: sbbs-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"  # 前端端口
+    environment:
+      - NODE_ENV=production
+      - NUXT_HOST=0.0.0.0
+      - NUXT_PORT=3000
+      - SBBS_API_URL=http://sbbs-backend:61234  # 容器间通信
+      - SBBS_DEV_API_URL=http://sbbs-backend:61234
+    depends_on:
+      - sbbs-backend
+    networks:
+      - sbbs-network
+
+networks:
+  sbbs-network:
+    driver: bridge
