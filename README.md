@@ -300,6 +300,7 @@ docker-compose -f docker-compose-app.yml logs -f
 
 ### 特别感谢
 - 感谢 [EasyImages2.0](https://github.com/icret/EasyImages2.0) 项目提供的图床解决方案
+- 感谢 [ChAo Blog's](https://blog.opui.me/)免费提供的已部署好的图床
 - 感谢 [OneIDC](https://www.1idc.net/) 提供的廉价服务器支持
 - 感谢所有测试用户的反馈和建议
 
