@@ -3221,10 +3221,10 @@ const API_BASE_URL = useApiBaseUrl()
 .post-title {
   background: linear-gradient(135deg, #1a202c, #2d3748);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   background-clip: text;
   position: relative;
   margin-bottom: 0.75rem;
+  color: #1a202c; /* 确保emoji和文字正常显示颜色 */
 }
 
 /* 标题容器样式调整 */

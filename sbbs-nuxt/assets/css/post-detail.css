@@ -182,7 +182,7 @@
   color: var(--text-primary);
   line-height: 1.6;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-  font-weight: 400;
+  font-weight: 450;  /* 从400调到450，让正文更粗一点 */
   letter-spacing: 0.01em;
 }
 
@@ -500,9 +500,23 @@
   margin-bottom: 18px;    /* 段落间距：扩大间距，更清晰分隔 */
   line-height: 1.5;       /* 行距：缩小，更紧凑 */
   font-size: 15px;        /* 字体大小：清晰紧凑 */
+  font-weight: 450 !important;  /* 添加font-weight，让正文更粗 */
   text-align: justify;
   word-break: break-word;
   hyphens: auto;
+}
+
+/* md-editor-v3 预览样式 */
+.post-content .md-editor-preview p {
+  font-weight: 450 !important;
+  font-size: 15px !important;
+  line-height: 1.5 !important;
+  color: var(--text-primary) !important;
+}
+
+.post-content .md-editor-preview {
+  font-weight: 450 !important;
+  color: var(--text-primary) !important;
 }
 
 /* 强调和粗体样式 */

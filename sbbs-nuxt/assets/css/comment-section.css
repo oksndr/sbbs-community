@@ -746,8 +746,8 @@
 .comment-text h6 { font-size: 0.75rem; }
 
 .comment-text strong {
-  font-weight: 600;
-  color: #1f2937;
+  font-weight: 700 !important;  /* 增强粗体效果，从600改为700 */
+  color: #111827 !important;    /* 使用更深的颜色 */
 }
 
 .comment-text em {
@@ -819,8 +819,8 @@
   margin: 0 !important;
   padding: 0 !important;
   line-height: 1.6 !important;
-  font-size: 15px !important;
-  font-weight: 500 !important;
+  font-size: 15px !important;  
+  font-weight: 550 !important;  /* 调到550 */
   display: inline !important;
 }
 
@@ -1099,6 +1099,7 @@
   color: #2d3748;
   line-height: 1.6;
   font-size: 0.85rem;
+  font-weight: 350;  /* 调到550 */
   margin: 0 !important;
   padding: 0 !important;
   min-height: auto;

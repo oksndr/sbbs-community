@@ -202,6 +202,26 @@
   word-wrap: break-word;
 }
 
+/* 回复内容中的强调样式 */
+.reply-text strong {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.reply-text em {
+  font-style: italic;
+  color: #4b5563;
+}
+
+.reply-text code {
+  background-color: #f3f4f6;
+  color: #e11d48;
+  padding: 0.125rem 0.25rem;
+  border-radius: 3px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.75rem;
+}
+
 .reply-text div {
   display: inline;
   margin: 0;

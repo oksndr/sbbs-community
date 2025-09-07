@@ -988,13 +988,15 @@ export function useComments(postId, initialComments = []) {
             throw new Error(data.msg || '点赞失败')
           }
         } catch (error) {
-          // 恢复UI状态
-          comment.isLiked = wasLiked
-          comment.isDisliked = wasDisliked
-          comment.likeCount = originalLikeCount
-          comment.dislikeCount = originalDislikeCount
-          if (showNotify) {
-            showNotify('点赞失败', 'error')
+          // 只有在API调用失败时才恢复UI状态
+          if (!success) {
+            comment.isLiked = wasLiked
+            comment.isDisliked = wasDisliked
+            comment.likeCount = originalLikeCount
+            comment.dislikeCount = originalDislikeCount
+            if (showNotify) {
+              showNotify('点赞失败', 'error')
+            }
           }
         }
       }
@@ -1122,30 +1124,24 @@ export function useComments(postId, initialComments = []) {
               showNotify('点踩成功', 'success')
             }
           } else if (data.code === 5) {
-            // 已经点过踩了，自动执行取消点踩
-            const cancelResponse = await fetch(`${API_BASE_URL}/v4/comment/cancelDislike/${commentId}`, { headers })
-            const cancelData = await cancelResponse.json()
-            
-            if (cancelData.code === 200) {
-              // 更新UI为取消点踩状态
-              comment.isDisliked = false
-              comment.dislikeCount = Math.max(0, originalDislikeCount - 1)
-              success = true
-              // 乐观显示提示（在UI更新时已显示）
-            } else {
-              throw new Error(cancelData.msg || '取消点踩失败')
+            // 已经点过踩了，但UI已经乐观更新为点踩状态，保持当前状态不变
+            success = true
+            if (showNotify) {
+              showNotify('点踩成功', 'success')
             }
           } else {
             throw new Error(data.msg || '点踩失败')
           }
         } catch (error) {
-          // 恢复UI状态
-          comment.isLiked = wasLiked
-          comment.isDisliked = wasDisliked
-          comment.likeCount = originalLikeCount
-          comment.dislikeCount = originalDislikeCount
-          if (showNotify) {
-            showNotify('点踩失败', 'error')
+          // 只有在API调用失败时才恢复UI状态
+          if (!success) {
+            comment.isLiked = wasLiked
+            comment.isDisliked = wasDisliked
+            comment.likeCount = originalLikeCount
+            comment.dislikeCount = originalDislikeCount
+            if (showNotify) {
+              showNotify('点踩失败', 'error')
+            }
           }
         }
       }
@@ -1228,45 +1224,49 @@ export function useComments(postId, initialComments = []) {
     }
   }
 
-  // 高亮@用户名和回复内容 - 支持一级评论的markdown解析
+  // 高亮@用户名和回复内容 - 支持所有评论的markdown解析
   const highlightMentions = (text, isReply = false) => {
     if (!text) return ''
     
     let processedText = text
 
-    // 对于一级评论（非回复），支持markdown解析
-    if (!isReply) {
-      try {
-        // 使用自定义markdown-it配置，禁用锚点，保留@提及
-        const { md } = useMarkdownIt({
-          disableAnchor: true,
-          typographer: false // 禁用印刷格式，避免干扰@提及
-        })
-        
-        // 先清理Vue模板相关的注释（这些是拖拽组件产生的）
-        processedText = processedText.replace(/<!--[\s\S]*?-->/g, '')
-        
-        // 自定义@用户名提及处理
-        const defaultRender = md.renderer.rules.text || function(tokens, idx) {
-          return tokens[idx].content
-        }
-        
-        md.renderer.rules.text = function(tokens, idx) {
-          let content = tokens[idx].content
-          // 处理@用户名提及
-          content = content.replace(
-            /(^|[^a-zA-Z0-9_\u4e00-\u9fa5])@([a-zA-Z0-9_\u4e00-\u9fa5]+)(?=[^a-zA-Z0-9_\u4e00-\u9fa5]|$)/g, 
-            '$1<span class="mention-tag">@$2</span>'
-          )
-          return content
-        }
-        
-        // 使用markdown-it解析
-        return md.render(processedText)
-      } catch (error) {
-        console.error('Markdown解析错误:', error)
-        // 降级为原有的纯文本处理
+    // 对于所有评论都支持markdown解析，包括回复评论
+    try {
+      // 使用自定义markdown-it配置，禁用锚点，保留@提及
+      const { md } = useMarkdownIt({
+        disableAnchor: true,
+        typographer: false // 禁用印刷格式，避免干扰@提及
+      })
+      
+      // 先清理Vue模板相关的注释（这些是拖拽组件产生的）
+      processedText = processedText.replace(/<!--[\s\S]*?-->/g, '')
+      
+      // 自定义@用户名提及处理
+      const defaultRender = md.renderer.rules.text || function(tokens, idx) {
+        return tokens[idx].content
       }
+      
+      md.renderer.rules.text = function(tokens, idx) {
+        let content = tokens[idx].content
+        // 处理@用户名提及
+        content = content.replace(
+          /(^|[^a-zA-Z0-9_\u4e00-\u9fa5])@([a-zA-Z0-9_\u4e00-\u9fa5]+)(?=[^a-zA-Z0-9_\u4e00-\u9fa5]|$)/g, 
+          '$1<span class="mention-tag">@$2</span>'
+        )
+        return content
+      }
+      
+      // 先手动处理加粗语法，确保不被遗漏
+      processedText = processedText.replace(/\*\*([^\*\n]+)\*\*/g, '<strong>$1</strong>')
+      
+      // 使用markdown-it解析
+      const renderedHtml = md.render(processedText)
+      
+      // 直接返回渲染结果（即使是纯文本也已经处理了加粗）
+      return renderedHtml
+    } catch (error) {
+      console.error('Markdown解析错误:', error)
+      // 降级为原有的纯文本处理
     }
     
     // 对于二级评论或markdown解析失败的情况，使用原有的纯文本处理逻辑
