@@ -8,7 +8,7 @@
 
 **社区首页** | **帖子详情**
 :---: | :---:
-<img src="https://img.opui.news/i/1/2025/09/07/162218-1.webp" width="400" alt="社区首页"> | <img src="https://img.opui.news/i/1/2025/09/07/162514-1.webp" width="400" alt="帖子详情">
+<img src="https://img.opui.app/i/1/2025/09/07/162218-1.webp" width="400" alt="社区首页"> | <img src="https://img.opui.app/i/1/2025/09/07/162514-1.webp" width="400" alt="帖子详情">
 
 ## 📋 前置要求
 
